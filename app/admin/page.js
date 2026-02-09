@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 
-export default function AdminDashboard() {
+function DashboardContent() {
     const searchParams = useSearchParams();
+    const router = useRouter();
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const successMsg = searchParams.get("success");
@@ -129,5 +130,13 @@ export default function AdminDashboard() {
                 </div>
             )}
         </div>
+    );
+}
+
+export default function AdminDashboard() {
+    return (
+        <Suspense fallback={<div className="py-20 text-center font-mono opacity-50">Loading editor...</div>}>
+            <DashboardContent />
+        </Suspense>
     );
 }
