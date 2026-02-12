@@ -2,6 +2,11 @@ import { getEntry, getEntries } from "@/lib/mdx";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Link from "next/link";
+import remarkGfm from "remark-gfm";
+import remarkBreaks from "remark-breaks";
+import rehypeExternalLinks from "rehype-external-links";
+
+
 
 export async function generateStaticParams() {
     const entries = getEntries("projects");
@@ -48,8 +53,18 @@ export default async function ProjectPage({ params }) {
                 <h2 className="uppercase text-xs font-mono tracking-[0.2em] mb-6 text-black/40">
                     Framing Intelektual
                 </h2>
-                <div className="text-xl md:text-2xl leading-relaxed font-serif italic text-black bg-card-bg/30 p-8 border-l-4 border-accent-red">
-                    <MDXRemote source={entry.content} />
+                <div className="text-xl md:text-2xl leading-relaxed font-serif italic text-black bg-card-bg/30 p-8 border-l-4 border-accent-red prose max-w-none">
+                    <MDXRemote
+                        source={entry.content}
+                        options={{
+                            mdxOptions: {
+                                remarkPlugins: [remarkGfm, remarkBreaks],
+                                rehypePlugins: [[rehypeExternalLinks, { target: "_blank", rel: ["noopener", "noreferrer"] }]],
+
+                            }
+                        }}
+                    />
+
                 </div>
             </section>
 

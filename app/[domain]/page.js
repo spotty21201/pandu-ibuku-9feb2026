@@ -2,6 +2,11 @@ import { getIntro, getEntries, getDomainSlugs } from "@/lib/mdx";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
+import remarkBreaks from "remark-breaks";
+import rehypeExternalLinks from "rehype-external-links";
+
+
 
 export async function generateStaticParams() {
     const domains = getDomainSlugs();
@@ -23,7 +28,7 @@ export default async function DomainPage({ params }) {
     const domainParts = domain.split("-").map(p => p.toUpperCase());
 
     return (
-        <div className="px-6 py-10 md:px-12 md:py-16 lg:px-20 max-w-5xl">
+        <div className="px-6 py-10 md:px-12 md:py-16 lg:px-20 max-w-6xl">
             <header className="mb-4">
                 <h2 className="font-serif font-normal text-4xl md:text-6xl lg:text-7xl leading-[0.85] tracking-tight text-black uppercase">
                     {domainParts.map((part, i) => (
@@ -34,7 +39,17 @@ export default async function DomainPage({ params }) {
 
             <section className="bg-card-bg p-8 md:p-12 border-l-[8px] border-accent-red mb-16">
                 <div className="text-lg md:text-xl font-sans leading-relaxed text-black/90 prose max-w-none">
-                    <MDXRemote source={intro.content} />
+                    <MDXRemote
+                        source={intro.content}
+                        options={{
+                            mdxOptions: {
+                                remarkPlugins: [remarkGfm, remarkBreaks],
+                                rehypePlugins: [[rehypeExternalLinks, { target: "_blank", rel: ["noopener", "noreferrer"] }]],
+
+                            }
+                        }}
+                    />
+
                 </div>
             </section>
 
@@ -53,8 +68,8 @@ export default async function DomainPage({ params }) {
                                     </span>
                                 </div>
                                 <div className="flex-1">
-                                    <h3 className="text-xl md:text-3xl font-bold leading-tight mb-4 tracking-tight font-sans text-black whitespace-pre-line">
-                                        {entry.title.replace(/\s+/g, '\n')}
+                                    <h3 className="text-xl md:text-3xl font-bold leading-tight mb-4 tracking-tight font-sans text-black">
+                                        {entry.title}
                                     </h3>
                                     <p className="text-base md:text-lg leading-relaxed mb-6 max-w-prose text-black">
                                         {entry.description}

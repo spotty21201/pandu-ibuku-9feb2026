@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function AboutPage() {
     return (
         <article className="px-6 py-10 md:px-12 md:py-16 lg:px-20 max-w-4xl">
@@ -7,6 +9,20 @@ export default function AboutPage() {
                 </h1>
                 <div className="h-1 w-20 bg-accent-red mb-12"></div>
             </header>
+
+            <figure className="mb-12">
+                <Image
+                    src="/images/author-mohamad-sriyanto.jpeg"
+                    alt="Mohamad Sriyanto"
+                    width={968}
+                    height={968}
+                    className="w-full max-w-sm border border-border-subtle bg-card-bg object-cover"
+                    priority
+                />
+                <figcaption className="mt-3 text-xs uppercase tracking-widest text-black/50">
+                    Mohamad Sriyanto
+                </figcaption>
+            </figure>
 
             <div className="prose prose-zinc prose-lg max-w-none prose-headings:font-serif prose-p:leading-relaxed prose-p:mb-8 text-black/90 font-sans">
                 <p>

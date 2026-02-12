@@ -95,6 +95,10 @@ export default function NewPostPage() {
                         className="w-full bg-white border border-border-subtle p-4 font-mono text-sm focus:outline-none focus:border-accent-red transition-colors resize-y"
                         placeholder="Write your content here..."
                     />
+                    <p className="text-[10px] uppercase tracking-widest opacity-40 font-bold">
+                        Tip: Line breaks are preserved. Use - or * for bullets. Use **bold** for emphasis.
+                    </p>
+
                 </div>
 
                 <div className="flex justify-between items-center pt-6">

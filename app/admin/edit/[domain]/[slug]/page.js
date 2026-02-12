@@ -116,6 +116,10 @@ export default function EditPostPage({ params }) {
                         onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                         className="w-full bg-white border border-border-subtle p-4 font-mono text-sm focus:outline-none focus:border-accent-red transition-colors resize-y leading-relaxed"
                     />
+                    <p className="text-[10px] uppercase tracking-widest opacity-40 font-bold">
+                        Tip: Line breaks are preserved. Use - or * for bullets. Use **bold** for emphasis.
+                    </p>
+
                 </div>
 
                 <div className="flex justify-between items-center pt-6">

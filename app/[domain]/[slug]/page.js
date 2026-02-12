@@ -2,6 +2,11 @@ import { getEntry, getEntries, getDomainSlugs } from "@/lib/mdx";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Link from "next/link";
+import remarkGfm from "remark-gfm";
+import remarkBreaks from "remark-breaks";
+import rehypeExternalLinks from "rehype-external-links";
+
+
 
 export async function generateStaticParams() {
     const domains = getDomainSlugs();
@@ -51,7 +56,17 @@ export default async function EntryPage({ params }) {
             </header>
 
             <div className="prose prose-zinc prose-lg max-w-none prose-headings:font-serif prose-p:leading-relaxed prose-p:mb-8 text-black/90">
-                <MDXRemote source={entry.content} />
+                <MDXRemote
+                    source={entry.content}
+                    options={{
+                        mdxOptions: {
+                            remarkPlugins: [remarkGfm, remarkBreaks],
+                            rehypePlugins: [[rehypeExternalLinks, { target: "_blank", rel: ["noopener", "noreferrer"] }]],
+
+                        }
+                    }}
+                />
+
             </div>
 
             <footer className="mt-24 pt-10 border-t border-border-subtle">
