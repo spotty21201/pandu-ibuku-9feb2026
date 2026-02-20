@@ -10,7 +10,13 @@ export async function POST(req) {
     const body = await req.json();
     const { title, domain, content, status } = body;
 
-    if (!title || !domain || !content) {
+    const cleanDomain = domain
+      ?.toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^\w-]+/g, '');
+
+    if (!title || !cleanDomain || !content) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
@@ -25,7 +31,7 @@ export async function POST(req) {
       .insert([
         {
           title,
-          domain,
+          domain: cleanDomain,
           slug,
           content,
           status: status || 'draft',
