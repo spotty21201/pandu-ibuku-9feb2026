@@ -14,13 +14,11 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-        const slug = title
+    const slug = title
       ?.toLowerCase()
       .trim()
       .replace(/\s+/g, '-')
       .replace(/[^\w-]+/g, '');
-
-    console.log('INSERT PAYLOAD:', { title, domain, slug, status });
 
     const { data, error } = await supabase
       .from('articles')
@@ -36,14 +34,12 @@ export async function POST(req) {
       .select();
 
     if (error) {
-      console.error('SUPABASE ERROR:', error);
-      return new Response(JSON.stringify({ error }), { status: 500 });
+      return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    return Response.json(data);
-  } catch (err) {
-    console.error('UNCAUGHT ERROR:', err);
-    return new Response(JSON.stringify({ err }), { status: 500 });
+    return NextResponse.json({ success: true, data });
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to save post' }, { status: 500 });
   }
 }
 
@@ -60,7 +56,7 @@ export async function GET(req) {
       return NextResponse.json({ error: 'Missing domain or slug' }, { status: 400 });
     }
 
-        const { data, error } = await supabase
+    const { data, error } = await supabase
       .from('articles')
       .select('*')
       .eq('domain', domain)
@@ -99,7 +95,7 @@ export async function PATCH(req) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-        const { error } = await supabase
+    const { error } = await supabase
       .from('articles')
       .update({
         title,
@@ -133,7 +129,7 @@ export async function DELETE(req) {
       return NextResponse.json({ error: 'Missing slug or domain' }, { status: 400 });
     }
 
-        const { error } = await supabase.from('articles').delete().eq('domain', domain).eq('slug', slug);
+    const { error } = await supabase.from('articles').delete().eq('domain', domain).eq('slug', slug);
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
     return NextResponse.json({ success: true });
