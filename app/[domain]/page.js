@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase';
 export const dynamic = 'force-dynamic';
 
 export default async function DomainPage({ params }) {
-  const { domain } = params;
+  const domain = params.domain.toLowerCase();
 
   const { data: posts, error } = await supabase
     .from('articles')
@@ -14,7 +14,7 @@ export default async function DomainPage({ params }) {
     .order('created_at', { ascending: false });
 
   if (error) {
-    console.error(error);
+    console.error('DOMAIN FETCH ERROR:', error);
     return <div>Error loading posts</div>;
   }
 
