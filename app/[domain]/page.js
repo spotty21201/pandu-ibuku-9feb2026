@@ -1,10 +1,6 @@
 import { getIntro, getEntries, getDomainSlugs } from '@/lib/mdx';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { MDXRemote } from 'next-mdx-remote/rsc';
-import remarkGfm from 'remark-gfm';
-import remarkBreaks from 'remark-breaks';
-import rehypeExternalLinks from 'rehype-external-links';
 
 export async function generateStaticParams() {
   const domains = await getDomainSlugs();
@@ -33,16 +29,8 @@ export default async function DomainPage({ params }) {
       </header>
 
       <section className="bg-card-bg p-8 md:p-12 border-l-[8px] border-accent-red mb-16">
-        <div className="text-lg md:text-xl font-sans leading-relaxed text-black/90 prose max-w-none">
-          <MDXRemote
-            source={intro.content}
-            options={{
-              mdxOptions: {
-                remarkPlugins: [remarkGfm, remarkBreaks],
-                rehypePlugins: [[rehypeExternalLinks, { target: '_blank', rel: ['noopener', 'noreferrer'] }]],
-              },
-            }}
-          />
+        <div className="text-lg md:text-xl font-sans leading-relaxed text-black/90 prose max-w-none whitespace-pre-wrap">
+          {intro.content}
         </div>
       </section>
 
