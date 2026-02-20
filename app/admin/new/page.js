@@ -12,6 +12,7 @@ export default function NewPostPage() {
         domain: "",
         content: "",
         date: new Date().toISOString().split("T")[0],
+        status: "draft",
     });
 
     useEffect(() => {
@@ -83,6 +84,18 @@ export default function NewPostPage() {
                             ))}
                         </select>
                     </div>
+                <div className="space-y-2">
+                    <label className="text-xs uppercase tracking-widest font-bold opacity-50">Status</label>
+                    <select
+                        value={formData.status}
+                        onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                        className="w-full bg-white border border-border-subtle p-3 font-sans focus:outline-none focus:border-accent-red transition-colors"
+                    >
+                        <option value="draft">Draft</option>
+                        <option value="published">Published</option>
+                    </select>
+                </div>
+
                 </div>
 
                 <div className="space-y-2">

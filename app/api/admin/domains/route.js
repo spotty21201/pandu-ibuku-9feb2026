@@ -1,11 +1,21 @@
 import { NextResponse } from 'next/server';
-import { getDomainSlugs } from '@/lib/mdx';
+import { getSupabaseAdmin } from '@/lib/supabase';
+import { requireAdminSession } from '@/lib/auth';
+
+const defaultDomains = ['akhlaq-mulia', 'pandu-bangsaku', 'ilmu-baru-bilangan-prima', 'khayalan-kah', 'projects', 'miscellaneous'];
 
 export async function GET() {
-    try {
-        const domains = getDomainSlugs();
-        return NextResponse.json({ domains });
-    } catch (error) {
-        return NextResponse.json({ error: 'Failed to fetch domains' }, { status: 500 });
-    }
+  try {
+    const auth = await requireAdminSession();
+    if (!auth.ok) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const supabase = getSupabaseAdmin();
+    const { data } = await supabase.from('articles').select('domain').not('domain', 'is', null);
+    const dbDomains = [...new Set((data || []).map((row) => row.domain).filter(Boolean))];
+    const domains = dbDomains.length > 0 ? dbDomains.sort() : defaultDomains;
+
+    return NextResponse.json({ domains });
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to fetch domains' }, { status: 500 });
+  }
 }

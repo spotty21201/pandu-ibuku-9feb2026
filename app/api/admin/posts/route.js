@@ -1,114 +1,144 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { getSupabaseAdmin } from '@/lib/supabase';
+import { requireAdminSession } from '@/lib/auth';
+
+function slugify(value) {
+  return value
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
 
 export async function POST(req) {
-    try {
-        const { title, domain, content, date } = await req.json();
+  try {
+    const auth = await requireAdminSession();
+    if (!auth.ok) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-        if (!title || !domain || !content) {
-            return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-        }
+    const { title, domain, content, date, excerpt, coverImage, status, author } = await req.json();
 
-        const slug = title
-            .toLowerCase()
-            .replace(/[^\w\s-]/g, '')
-            .replace(/[\s_-]+/g, '-')
-            .replace(/^-+|-+$/g, '');
-
-        const contentDirectory = path.join(process.cwd(), 'content');
-        const domainPath = path.join(contentDirectory, domain);
-
-        if (!fs.existsSync(domainPath)) {
-            return NextResponse.json({ error: 'Domain not found' }, { status: 404 });
-        }
-
-        const filePath = path.join(domainPath, `${slug}.md`);
-
-        // Frontmatter construction
-        const fileContent = `---
-title: "${title}"
-date: "${date || new Date().toISOString().split('T')[0]}"
----
-
-${content}`;
-
-        fs.writeFileSync(filePath, fileContent, 'utf8');
-
-        return NextResponse.json({ success: true, slug });
-    } catch (error) {
-        console.error('Save error:', error);
-        return NextResponse.json({ error: 'Failed to save post' }, { status: 500 });
+    if (!title || !domain || !content) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
+
+    const supabase = getSupabaseAdmin();
+    const slug = slugify(title);
+
+    const { error } = await supabase.from('articles').insert({
+      title,
+      slug,
+      domain,
+      content,
+      excerpt: excerpt || null,
+      cover_image: coverImage || null,
+      status: status || 'draft',
+      author: author || auth.user.email || 'admin',
+      created_at: date || new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    });
+
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+
+    return NextResponse.json({ success: true, slug });
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to save post' }, { status: 500 });
+  }
 }
 
 export async function GET(req) {
-    try {
-        const { searchParams } = new URL(req.url);
-        const domain = searchParams.get('domain');
-        const slug = searchParams.get('slug');
+  try {
+    const auth = await requireAdminSession();
+    if (!auth.ok) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-        if (!domain || !slug) {
-            return NextResponse.json({ error: 'Missing domain or slug' }, { status: 400 });
-        }
+    const { searchParams } = new URL(req.url);
+    const domain = searchParams.get('domain');
+    const slug = searchParams.get('slug');
 
-        const contentDirectory = path.join(process.cwd(), 'content');
-        const filePath = path.join(contentDirectory, domain, `${slug}.md`);
-
-        if (!fs.existsSync(filePath)) {
-            return NextResponse.json({ error: 'Post not found' }, { status: 404 });
-        }
-
-        const fileContent = fs.readFileSync(filePath, 'utf8');
-        return NextResponse.json({ content: fileContent });
-    } catch (error) {
-        return NextResponse.json({ error: 'Failed to fetch post' }, { status: 500 });
+    if (!domain || !slug) {
+      return NextResponse.json({ error: 'Missing domain or slug' }, { status: 400 });
     }
+
+    const supabase = getSupabaseAdmin();
+    const { data, error } = await supabase
+      .from('articles')
+      .select('*')
+      .eq('domain', domain)
+      .eq('slug', slug)
+      .single();
+
+    if (error || !data) {
+      return NextResponse.json({ error: 'Post not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({
+      post: {
+        title: data.title,
+        domain: data.domain,
+        content: data.content || '',
+        date: data.created_at ? data.created_at.split('T')[0] : '',
+        status: data.status || 'draft',
+        excerpt: data.excerpt || '',
+        coverImage: data.cover_image || '',
+        author: data.author || '',
+      },
+    });
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to fetch post' }, { status: 500 });
+  }
 }
 
 export async function PATCH(req) {
-    try {
-        const { title, domain, content, slug, date } = await req.json();
+  try {
+    const auth = await requireAdminSession();
+    if (!auth.ok) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-        if (!domain || !slug || !content || !title) {
-            return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-        }
+    const { title, domain, content, slug, date, excerpt, coverImage, status, author } = await req.json();
 
-        const contentDirectory = path.join(process.cwd(), 'content');
-        const filePath = path.join(contentDirectory, domain, `${slug}.md`);
-
-        if (!fs.existsSync(filePath)) {
-            return NextResponse.json({ error: 'File not found' }, { status: 404 });
-        }
-
-        const updatedFileContent = `---\ntitle: "${title}"\ndate: "${date}"\n---\n\n${content}`;
-
-        fs.writeFileSync(filePath, updatedFileContent, 'utf8');
-
-        return NextResponse.json({ success: true });
-    } catch (error) {
-        return NextResponse.json({ error: 'Failed to update post' }, { status: 500 });
+    if (!domain || !slug || !content || !title) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
+
+    const supabase = getSupabaseAdmin();
+    const { error } = await supabase
+      .from('articles')
+      .update({
+        title,
+        content,
+        excerpt: excerpt || null,
+        cover_image: coverImage || null,
+        status: status || 'draft',
+        author: author || auth.user.email || 'admin',
+        created_at: date ? new Date(date).toISOString() : undefined,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('domain', domain)
+      .eq('slug', slug);
+
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to update post' }, { status: 500 });
+  }
 }
 
 export async function DELETE(req) {
-    try {
-        const { slug, domain } = await req.json();
+  try {
+    const auth = await requireAdminSession();
+    if (!auth.ok) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-        if (!slug || !domain) {
-            return NextResponse.json({ error: 'Missing slug or domain' }, { status: 400 });
-        }
+    const { slug, domain } = await req.json();
 
-        const contentDirectory = path.join(process.cwd(), 'content');
-        const filePath = path.join(contentDirectory, domain, `${slug}.md`);
-
-        if (fs.existsSync(filePath)) {
-            fs.unlinkSync(filePath);
-            return NextResponse.json({ success: true });
-        } else {
-            return NextResponse.json({ error: 'File not found' }, { status: 404 });
-        }
-    } catch (error) {
-        return NextResponse.json({ error: 'Failed to delete post' }, { status: 500 });
+    if (!slug || !domain) {
+      return NextResponse.json({ error: 'Missing slug or domain' }, { status: 400 });
     }
+
+    const supabase = getSupabaseAdmin();
+    const { error } = await supabase.from('articles').delete().eq('domain', domain).eq('slug', slug);
+
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to delete post' }, { status: 500 });
+  }
 }

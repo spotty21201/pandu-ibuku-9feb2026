@@ -9,7 +9,7 @@ import rehypeExternalLinks from "rehype-external-links";
 
 
 export async function generateStaticParams() {
-    const entries = getEntries("projects");
+    const entries = await getEntries("projects");
     return entries.map((entry) => ({
         slug: entry.slug,
     }));
@@ -17,7 +17,7 @@ export async function generateStaticParams() {
 
 export default async function ProjectPage({ params }) {
     const { slug } = await params;
-    const entry = getEntry("projects", slug);
+    const entry = await getEntry("projects", slug);
 
     if (!entry) {
         notFound();

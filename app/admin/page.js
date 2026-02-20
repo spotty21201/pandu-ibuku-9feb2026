@@ -85,6 +85,7 @@ function DashboardContent() {
                                 <th className="px-6 py-4 text-xs uppercase tracking-widest opacity-50 font-bold">Domain</th>
                                 <th className="px-6 py-4 text-xs uppercase tracking-widest opacity-50 font-bold">Title</th>
                                 <th className="px-6 py-4 text-xs uppercase tracking-widest opacity-50 font-bold">Date</th>
+                                <th className="px-6 py-4 text-xs uppercase tracking-widest opacity-50 font-bold">Status</th>
                                 <th className="px-6 py-4 text-xs uppercase tracking-widest opacity-50 font-bold text-right">Actions</th>
                             </tr>
                         </thead>
@@ -103,6 +104,9 @@ function DashboardContent() {
                                     </td>
                                     <td className="px-6 py-4 font-mono text-xs opacity-60">
                                         {post.date || "N/A"}
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <span className="text-[10px] uppercase tracking-widest font-bold">{post.status || "draft"}</span>
                                     </td>
                                     <td className="px-6 py-4 text-right">
                                         <Link

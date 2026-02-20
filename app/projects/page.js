@@ -8,8 +8,8 @@ import rehypeExternalLinks from "rehype-external-links";
 
 
 export default async function ProjectsIndex() {
-    const intro = getIntro("projects");
-    const projects = getEntries("projects");
+    const intro = await getIntro("projects");
+    const projects = await getEntries("projects");
 
     return (
         <div className="px-6 py-10 md:px-12 md:py-16 lg:px-20 max-w-5xl">
