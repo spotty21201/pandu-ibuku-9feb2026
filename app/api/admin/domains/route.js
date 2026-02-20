@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getSupabaseAdmin } from '@/lib/supabase';
+import { supabaseAdmin as supabase } from '@/lib/supabase-admin';
 import { requireAdminSession } from '@/lib/auth';
 
 const defaultDomains = ['akhlaq-mulia', 'pandu-bangsaku', 'ilmu-baru-bilangan-prima', 'khayalan-kah', 'projects', 'miscellaneous'];
@@ -8,8 +8,6 @@ export async function GET() {
   try {
     const auth = await requireAdminSession();
     if (!auth.ok) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
-    const supabase = getSupabaseAdmin();
     const { data } = await supabase.from('articles').select('domain').not('domain', 'is', null);
     const dbDomains = [...new Set((data || []).map((row) => row.domain).filter(Boolean))];
     const domains = dbDomains.length > 0 ? dbDomains.sort() : defaultDomains;

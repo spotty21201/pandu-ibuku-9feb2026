@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getSupabaseAdmin } from '@/lib/supabase';
+import { supabaseAdmin as supabase } from '@/lib/supabase-admin';
 import { requireAdminSession } from '@/lib/auth';
 
 export async function POST(req) {
@@ -14,8 +14,7 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const supabase = getSupabaseAdmin();
-    const slug = title
+        const slug = title
       ?.toLowerCase()
       .trim()
       .replace(/\s+/g, '-')
@@ -61,8 +60,7 @@ export async function GET(req) {
       return NextResponse.json({ error: 'Missing domain or slug' }, { status: 400 });
     }
 
-    const supabase = getSupabaseAdmin();
-    const { data, error } = await supabase
+        const { data, error } = await supabase
       .from('articles')
       .select('*')
       .eq('domain', domain)
@@ -101,8 +99,7 @@ export async function PATCH(req) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const supabase = getSupabaseAdmin();
-    const { error } = await supabase
+        const { error } = await supabase
       .from('articles')
       .update({
         title,
@@ -136,8 +133,7 @@ export async function DELETE(req) {
       return NextResponse.json({ error: 'Missing slug or domain' }, { status: 400 });
     }
 
-    const supabase = getSupabaseAdmin();
-    const { error } = await supabase.from('articles').delete().eq('domain', domain).eq('slug', slug);
+        const { error } = await supabase.from('articles').delete().eq('domain', domain).eq('slug', slug);
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
     return NextResponse.json({ success: true });
