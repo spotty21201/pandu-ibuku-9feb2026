@@ -2,46 +2,49 @@ import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase';
 import { requireAdminSession } from '@/lib/auth';
 
-function slugify(value) {
-  return value
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/[\s_-]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-}
-
 export async function POST(req) {
   try {
     const auth = await requireAdminSession();
     if (!auth.ok) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const { title, domain, content, date, excerpt, coverImage, status, author } = await req.json();
+    const body = await req.json();
+    const { title, domain, content, status } = body;
 
     if (!title || !domain || !content) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
     const supabase = getSupabaseAdmin();
-    const slug = slugify(title);
+    const slug = title
+      ?.toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^\w-]+/g, '');
 
-    const { error } = await supabase.from('articles').insert({
-      title,
-      slug,
-      domain,
-      content,
-      excerpt: excerpt || null,
-      cover_image: coverImage || null,
-      status: status || 'draft',
-      author: author || auth.user.email || 'admin',
-      created_at: date || new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    });
+    console.log('INSERT PAYLOAD:', { title, domain, slug, status });
 
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+    const { data, error } = await supabase
+      .from('articles')
+      .insert([
+        {
+          title,
+          domain,
+          slug,
+          content,
+          status: status || 'draft',
+        },
+      ])
+      .select();
 
-    return NextResponse.json({ success: true, slug });
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to save post' }, { status: 500 });
+    if (error) {
+      console.error('SUPABASE ERROR:', error);
+      return new Response(JSON.stringify({ error }), { status: 500 });
+    }
+
+    return Response.json(data);
+  } catch (err) {
+    console.error('UNCAUGHT ERROR:', err);
+    return new Response(JSON.stringify({ err }), { status: 500 });
   }
 }
 
