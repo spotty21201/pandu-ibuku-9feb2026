@@ -1,30 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { DOMAINS } from "@/lib/domains";
 
 export default function NewPostPage() {
     const router = useRouter();
-    const [domains, setDomains] = useState([]);
     const [loading, setLoading] = useState(false);
+    const domainOptions = DOMAINS.filter((d) => d.slug);
     const [formData, setFormData] = useState({
         title: "",
-        domain: "",
+        domain: domainOptions[0]?.slug || "",
         content: "",
         date: new Date().toISOString().split("T")[0],
         status: "draft",
     });
-
-    useEffect(() => {
-        fetch("/api/admin/domains")
-            .then((res) => res.json())
-            .then((data) => {
-                setDomains(data.domains || []);
-                if (data.domains?.length > 0) {
-                    setFormData((prev) => ({ ...prev, domain: data.domains[0] }));
-                }
-            });
-    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -77,9 +67,9 @@ export default function NewPostPage() {
                             onChange={(e) => setFormData({ ...formData, domain: e.target.value })}
                             className="w-full bg-white border border-border-subtle p-3 font-sans focus:outline-none focus:border-accent-red transition-colors"
                         >
-                            {domains.map((d) => (
-                                <option key={d} value={d}>
-                                    {d.replace(/-/g, " ")}
+                            {domainOptions.map((d) => (
+                                <option key={d.slug} value={d.slug}>
+                                    {d.label}
                                 </option>
                             ))}
                         </select>

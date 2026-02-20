@@ -1,6 +1,7 @@
 import { Playfair_Display, Inter, Open_Sans } from "next/font/google";
 import "./globals.css";
 import Sidebar from "./components/Sidebar";
+import { DOMAINS } from "@/lib/domains";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -24,12 +25,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   const navItems = [
-    { name: "Beranda", href: "/" },
-    { name: "Pandu Bangsaku", href: "/pandu-bangsaku" },
-    { name: "Akhlaq Mulia", href: "/akhlaq-mulia" },
-    { name: "Ilmu Baru Bilangan Prima", href: "/ilmu-baru-bilangan-prima", multiline: true },
-    { name: "Khayalan-kah", href: "/khayalan-kah" },
-    { name: "Miscellaneous", href: "/miscellaneous" },
+    ...DOMAINS.map((d) => ({ name: d.label, href: d.slug ? `/${d.slug}` : "/" })),
     { name: "Projects", href: "/projects" },
     { name: "About", href: "/about" },
   ];
