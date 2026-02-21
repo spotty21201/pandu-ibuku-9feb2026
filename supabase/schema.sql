@@ -24,4 +24,30 @@ for select
 to anon, authenticated
 using (status = 'published');
 
+create table if not exists public.pages (
+  id uuid default gen_random_uuid() primary key,
+  slug text unique not null,
+  title text not null,
+  content text,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+alter table public.pages enable row level security;
+
+drop policy if exists "Public read pages" on public.pages;
+create policy "Public read pages"
+on public.pages
+for select
+to anon, authenticated
+using (true);
+
+drop policy if exists "Admin full access pages" on public.pages;
+create policy "Admin full access pages"
+on public.pages
+for all
+to authenticated
+using (true)
+with check (true);
+
 -- Service role key bypasses RLS for admin API routes.

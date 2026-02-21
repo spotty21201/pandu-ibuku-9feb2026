@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
+import { DOMAINS } from "@/lib/domains";
 
 function DashboardContent() {
     const searchParams = useSearchParams();
@@ -51,7 +52,7 @@ function DashboardContent() {
             <header className="flex justify-between items-end border-b border-border-subtle pb-8">
                 <div>
                     <h2 className="text-4xl font-serif font-bold mb-2">Repository Dashboard</h2>
-                    <p className="text-black/60">Manage your collection of ideas and articles.</p>
+                    <p className="text-black/60">Manage menu pages and your collection of articles.</p>
                 </div>
                 <div className="flex gap-4">
                     <button
@@ -71,9 +72,22 @@ function DashboardContent() {
 
             {successMsg && (
                 <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 font-mono text-sm animate-in fade-in slide-in-from-top-4 duration-500">
-                    Success: {successMsg === "post_created" ? "Post has been published to the archive." : "Archive entry has been updated."}
+                    Success: {successMsg === "post_created" ? "Post has been published to the archive." : successMsg === "page_updated" ? "Menu page has been updated." : "Archive entry has been updated."}
                 </div>
             )}
+
+            <section className="bg-white border border-border-subtle p-6">
+                <h3 className="text-xl font-serif font-bold mb-4">Pages</h3>
+                <ul className="space-y-2">
+                    {DOMAINS.filter((d) => d.slug).map((d) => (
+                        <li key={d.slug}>
+                            <Link href={`/admin/pages/${d.slug}`} className="text-sm uppercase tracking-wider hover:text-accent-red">
+                                Edit {d.label}
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
+            </section>
 
             {loading ? (
                 <div className="py-20 text-center font-mono opacity-50">Loading archive...</div>

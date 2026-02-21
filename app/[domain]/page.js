@@ -10,6 +10,12 @@ export default async function DomainPage({ params }) {
     return <div>Error loading posts</div>;
   }
 
+  const { data: page } = await supabase
+    .from('pages')
+    .select('*')
+    .eq('slug', domain)
+    .single();
+
   const { data: posts, error } = await supabase
     .from('articles')
     .select('*')
@@ -22,47 +28,28 @@ export default async function DomainPage({ params }) {
     return <div>Error loading posts</div>;
   }
 
-  if (!posts || posts.length === 0) {
-    return (
-      <div className="max-w-3xl mx-auto px-6 py-16">
-        <h1 className="text-5xl font-serif tracking-wide uppercase mb-8">
-          {domain.replace(/-/g, ' ')}
-        </h1>
-        <p className="text-gray-500">No published posts yet.</p>
-      </div>
-    );
-  }
-
   return (
     <div className="max-w-3xl mx-auto px-6 py-16">
-      <h1 className="text-5xl font-serif tracking-wide uppercase mb-12">
-        {domain.replace(/-/g, ' ')}
-      </h1>
+      {page && (
+        <>
+          <h1 className="text-5xl font-serif mb-8">{page.title}</h1>
+          <div className="mb-16" dangerouslySetInnerHTML={{ __html: page.content || '' }} />
+        </>
+      )}
 
-      <div className="space-y-12">
-        {posts.map((post) => {
-          const plain = (post.content || '').replace(/<[^>]+>/g, '').trim();
-          const snippet = post.excerpt ? post.excerpt : `${plain.slice(0, 180)}${plain.length > 180 ? '...' : ''}`;
-
-          return (
+      {posts && posts.length > 0 ? (
+        <div className="space-y-12">
+          {posts.map((post) => (
             <article key={post.id}>
-              <a href={`/${domain}/${post.slug}`} className="block group">
-                <h2 className="text-2xl font-serif group-hover:underline">
-                  {post.title}
-                </h2>
-
-                <p className="mt-3 text-gray-700 leading-relaxed">
-                  {snippet}
-                </p>
-
-                <span className="inline-block mt-4 text-sm tracking-wide uppercase">
-                  Read more →
-                </span>
+              <a href={`/${domain}/${post.slug}`}>
+                <h2 className="text-2xl font-serif">{post.title}</h2>
               </a>
             </article>
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-gray-500">No published posts yet.</p>
+      )}
     </div>
   );
 }
