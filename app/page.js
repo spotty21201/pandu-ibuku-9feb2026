@@ -9,31 +9,27 @@ export default function Home() {
       </header>
 
       <section className="bg-card-bg p-8 md:p-12 border-l-[8px] border-accent-red mb-16">
-        <p className="text-lg md:text-xl font-sans leading-relaxed text-black/90">
-          Selamat datang di Pandu Ibuku. Ini bukan sebuah blog, bukan media, dan bukan sarana promosi.
-          Tempat ini adalah sebuah perpustakaan digital, sebuah buku catatan, dan arsip pemikiran yang terukur.
-        </p>
+        <div className="bg-neutral-200 p-10">
+          <p className="text-xl leading-relaxed">
+            Pandu Ibuku merupakan perpustakaan digital yang menyimpan dan
+            mengelola catatan pemikiran secara terstruktur.
+          </p>
+
+          <p className="mt-6 text-xl leading-relaxed">
+            Bukan blog, bukan media sosial, dan bukan kanal promosi.
+            Laman ini dibangun sebagai sistem arsip yang memungkinkan gagasan
+            bertahan, berkembang, dan ditelusuri kembali.
+          </p>
+
+          <p className="mt-6 text-xl leading-relaxed">
+            Struktur domain di sisi kiri adalah kerangka pengelompokan,
+            bukan sekadar menu navigasi.
+          </p>
+        </div>
       </section>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-24">
-        <div>
-          <h3 className="uppercase text-base font-medium tracking-wide mb-4">Navigasi Utama</h3>
-          <p className="text-base leading-relaxed text-black/80">
-            Gunakan menu di samping untuk menjelajahi enam domain utama pemikiran kami,
-            mulai dari panduan bangsa hingga eksplorasi matematika bilangan prima.
-          </p>
-        </div>
-        <div>
-          <h3 className="uppercase text-base font-medium tracking-wide mb-4">Proyek & Instrumen</h3>
-          <p className="text-base leading-relaxed text-black/80">
-            Halaman Proyek menampilkan manifestasi terapan dari ide-ide yang ada di dalam arsip ini,
-            termasuk visualisasi dan alat bantu penalaran.
-          </p>
-        </div>
-      </div>
-
-      <div className="mt-20 p-12 bg-card-bg/50 border border-border-subtle italic font-serif text-2xl text-center">
-        "Ide datang pertama. Instrumen mengikuti. Arsip tetap abadi."
+      <div className="bg-neutral-100 p-12 text-center italic text-2xl font-serif">
+        "Arsip bukan sekadar penyimpanan. Ia adalah kesinambungan."
       </div>
     </div>
   );
