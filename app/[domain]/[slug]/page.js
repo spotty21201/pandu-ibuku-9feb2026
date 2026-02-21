@@ -1,5 +1,7 @@
 import { supabase } from '@/lib/supabase';
 import { notFound } from 'next/navigation';
+import ReactMarkdown from 'react-markdown';
+import remarkBreaks from 'remark-breaks';
 
 export const dynamic = 'force-dynamic';
 
@@ -27,7 +29,9 @@ export default async function PostPage({ params }) {
   return (
     <article className="px-6 py-10 md:px-12 md:py-16 lg:px-20 max-w-4xl">
       <h1 className="text-3xl md:text-5xl font-serif font-bold mb-8">{post.title}</h1>
-      <div dangerouslySetInnerHTML={{ __html: post.content || '' }} />
+      <ReactMarkdown remarkPlugins={[remarkBreaks]} className="prose prose-neutral max-w-none leading-relaxed">
+        {post.content || ''}
+      </ReactMarkdown>
     </article>
   );
 }

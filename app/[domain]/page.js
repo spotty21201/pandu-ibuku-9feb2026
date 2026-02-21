@@ -1,4 +1,6 @@
 import { supabase } from '@/lib/supabase';
+import ReactMarkdown from 'react-markdown';
+import remarkBreaks from 'remark-breaks';
 
 export const dynamic = 'force-dynamic';
 
@@ -33,7 +35,12 @@ export default async function DomainPage({ params }) {
       {page && (
         <>
           <h1 className="text-5xl font-serif mb-8">{page.title}</h1>
-          <div className="mb-16" dangerouslySetInnerHTML={{ __html: page.content || '' }} />
+          <ReactMarkdown
+            remarkPlugins={[remarkBreaks]}
+            className="prose prose-neutral max-w-none leading-relaxed mb-16"
+          >
+            {page.content || ''}
+          </ReactMarkdown>
         </>
       )}
 
