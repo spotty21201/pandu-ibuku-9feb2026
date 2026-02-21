@@ -20,8 +20,13 @@ export default async function ProjectsIndex() {
   }
 
   return (
-    <div className="px-6 py-10 md:px-12 md:py-16 lg:px-20 max-w-6xl">
-      <h1 className="font-serif text-4xl md:text-6xl uppercase mb-8">projects</h1>
+    <div className="max-w-3xl mx-auto px-6 py-20">
+      <div className="mb-16">
+        <h1 className="text-7xl font-serif tracking-tight">
+          PROJECTS
+        </h1>
+        <div className="w-16 h-[3px] bg-red-700 mt-6"></div>
+      </div>
       <ul className="space-y-4">
         {projects.map((post) => (
           <li key={post.id}>
