@@ -63,7 +63,7 @@ export default async function DomainPage({ params }) {
                 </p>
 
                 <a href={`/${post.domain}/${post.slug}`}>
-                  <h2 className="text-3xl font-serif hover:opacity-70 transition mb-4">
+                  <h2 className="text-3xl font-serif text-accent-red hover:opacity-70 transition mb-4">
                     {post.title}
                   </h2>
                 </a>

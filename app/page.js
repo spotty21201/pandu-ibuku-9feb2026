@@ -9,23 +9,20 @@ export default function Home() {
       </header>
 
       <section className="bg-card-bg p-8 md:p-12 border-l-[8px] border-accent-red mb-16">
-        <div className="bg-neutral-200 p-10">
-          <p className="text-xl leading-relaxed">
-            Pandu Ibuku merupakan perpustakaan digital yang menyimpan dan
-            mengelola catatan pemikiran secara terstruktur.
-          </p>
 
-          <p className="mt-6 text-xl leading-relaxed">
-            Bukan blog, bukan media sosial, dan bukan kanal promosi.
-            Laman ini dibangun sebagai sistem arsip yang memungkinkan gagasan
-            bertahan, berkembang, dan ditelusuri kembali.
-          </p>
+        <p className="text-xl leading-relaxed">
+          Pandu Ibuku merupakan perpustakaan digital yang menyimpan dan
+          mengelola catatan pemikiran secara terstruktur.
+        </p>
 
-          <p className="mt-6 text-xl leading-relaxed">
-            Struktur domain di sisi kiri adalah kerangka pengelompokan,
-            bukan sekadar menu navigasi.
-          </p>
-        </div>
+        <p className="mt-6 text-xl leading-relaxed">
+          Bukan blog, bukan media sosial, dan bukan kanal promosi.
+          Laman ini dibangun sebagai sistem arsip yang memungkinkan gagasan
+          bertahan, berkembang, dan ditelusuri kembali.
+        </p>
+
+
+
       </section>
 
       <div className="bg-neutral-100 p-12 text-center italic text-2xl font-serif">

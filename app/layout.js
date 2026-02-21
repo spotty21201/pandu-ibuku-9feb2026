@@ -26,7 +26,6 @@ export const metadata = {
 export default function RootLayout({ children }) {
   const navItems = [
     ...DOMAINS.map((d) => ({ name: d.label, href: d.slug ? `/${d.slug}` : "/" })),
-    { name: "Projects", href: "/projects" },
     { name: "About", href: "/about" },
   ];
 
@@ -45,7 +44,7 @@ export default function RootLayout({ children }) {
           <footer className="border-t border-border-subtle mt-auto">
             <div className="px-6 py-10 md:px-12 text-center">
               <p className="text-sm font-medium mb-1">Pandu Ibuku &copy; {new Date().getFullYear()}</p>
-              <p className="text-sm text-black/60">Arsip Pemikiran Permanen</p>
+              <p className="text-sm text-black/60">Kompilasi pemikiran dan ide Mohamad Sriyanto</p>
               <div className="mt-4">
                 <a href="/admin" className="text-[10px] uppercase tracking-[0.2em] opacity-20 hover:opacity-100 transition-opacity">Admin</a>
               </div>

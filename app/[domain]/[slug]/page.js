@@ -39,19 +39,17 @@ export default async function PostPage({ params }) {
 
               if (isYoutube) {
                 return (
-                  <div className="mt-6">
-                    <a
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-3 text-red-600 hover:opacity-80 transition"
-                    >
-                      <FaYoutube className="text-2xl" />
-                      <span className="underline break-all">
-                        Watch on YouTube
-                      </span>
-                    </a>
-                  </div>
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-3 text-red-600 hover:opacity-80 transition"
+                  >
+                    <FaYoutube className="text-2xl" />
+                    <span className="underline break-all">
+                      Watch on YouTube
+                    </span>
+                  </a>
                 );
               }
 
