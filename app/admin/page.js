@@ -3,7 +3,6 @@
 import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
-import { DOMAINS } from "@/lib/domains";
 
 function DashboardContent() {
     const searchParams = useSearchParams();
@@ -75,19 +74,6 @@ function DashboardContent() {
                     Success: {successMsg === "post_created" ? "Post has been published to the archive." : successMsg === "page_updated" ? "Menu page has been updated." : "Archive entry has been updated."}
                 </div>
             )}
-
-            <section className="bg-white border border-border-subtle p-6">
-                <h3 className="text-xl font-serif font-bold mb-4">Pages</h3>
-                <ul className="space-y-2">
-                    {DOMAINS.filter((d) => d.slug).map((d) => (
-                        <li key={d.slug}>
-                            <Link href={`/admin/pages/${d.slug}`} className="text-sm uppercase tracking-wider hover:text-accent-red">
-                                Edit {d.label}
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-            </section>
 
             {loading ? (
                 <div className="py-20 text-center font-mono opacity-50">Loading archive...</div>
