@@ -4,8 +4,13 @@ import { notFound } from 'next/navigation';
 export const dynamic = 'force-dynamic';
 
 export default async function PostPage({ params }) {
-  const domain = params.domain.toLowerCase();
-  const slug = params.slug.toLowerCase();
+  const resolvedParams = await params;
+  const domain = resolvedParams?.domain?.toLowerCase();
+  const slug = resolvedParams?.slug?.toLowerCase();
+
+  if (!domain || !slug) {
+    return notFound();
+  }
 
   const { data: post, error } = await supabase
     .from('articles')
