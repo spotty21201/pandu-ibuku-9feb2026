@@ -1,32 +1,33 @@
 export default function Home() {
   return (
-    <div className="px-6 py-10 md:px-12 md:py-16 lg:px-20 max-w-5xl">
-      <header className="mb-4">
-        <h2 className="font-serif font-normal text-4xl md:text-6xl lg:text-7xl leading-[0.85] tracking-tight text-black uppercase">
+    <div className="px-6 py-12 md:px-10 md:py-16 lg:px-16 max-w-4xl">
+      <header className="mb-6 md:mb-8 overflow-hidden">
+        <h2 className="font-serif font-normal text-4xl md:text-5xl lg:text-6xl leading-[0.9] tracking-tighter text-black uppercase animate-reveal">
           <span className="block">ARSIP</span>
           <span className="block">PEMIKIRAN</span>
         </h2>
       </header>
 
-      <section className="bg-card-bg p-8 md:p-12 border-l-[8px] border-accent-red mb-16">
+      <div className="animate-reveal-delayed">
+        <section className="bg-card-bg/40 backdrop-blur-sm p-6 md:p-10 border-l-[8px] border-accent-red mb-12 shadow-sm">
+          <p className="text-lg md:text-xl leading-relaxed font-light text-black/80">
+            Pandu Ibuku merupakan <span className="font-medium text-black">perpustakaan digital</span> yang menyimpan dan
+            mengelola catatan pemikiran secara terstruktur.
+          </p>
 
-        <p className="text-xl leading-relaxed">
-          Pandu Ibuku merupakan perpustakaan digital yang menyimpan dan
-          mengelola catatan pemikiran secara terstruktur.
-        </p>
+          <p className="mt-5 text-lg md:text-xl leading-relaxed font-light text-black/80">
+            Bukan blog, bukan media sosial, and bukan kanal promosi.
+            Laman ini dibangun sebagai <span className="font-medium text-black">sistem arsip</span> yang memungkinkan gagasan
+            bertahan, berkembang, and ditelusuri kembali.
+          </p>
+        </section>
 
-        <p className="mt-6 text-xl leading-relaxed">
-          Bukan blog, bukan media sosial, dan bukan kanal promosi.
-          Laman ini dibangun sebagai sistem arsip yang memungkinkan gagasan
-          bertahan, berkembang, dan ditelusuri kembali.
-        </p>
-
-
-
-      </section>
-
-      <div className="bg-neutral-100 p-12 text-center italic text-2xl font-serif">
-        "Arsip bukan sekadar penyimpanan. Ia adalah kesinambungan."
+        <div className="p-10 md:p-16 border border-border-subtle bg-white/10 text-center italic text-xl md:text-2xl font-serif text-black/70 relative group">
+          <span className="relative z-10">
+            "Arsip bukan sekadar penyimpanan. Ia adalah kesinambungan."
+          </span>
+          <div className="absolute inset-0 bg-accent-red/5 scale-x-0 group-hover:scale-x-100 transition-transform duration-1000 origin-left" />
+        </div>
       </div>
     </div>
   );

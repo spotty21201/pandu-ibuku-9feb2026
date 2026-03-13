@@ -2,15 +2,15 @@ import Image from "next/image";
 
 export default function AboutPage() {
     return (
-        <article className="px-6 py-10 md:px-12 md:py-16 lg:px-20 max-w-4xl">
-            <header className="mb-12">
-                <h1 className="text-4xl md:text-6xl font-serif font-bold mb-8 leading-tight tracking-tight uppercase">
+        <article className="max-w-3xl mx-auto px-6 py-20 w-full">
+            <header className="mb-16">
+                <h1 className="text-6xl md:text-7xl font-serif tracking-tight font-normal animate-reveal">
                     About
                 </h1>
-                <div className="h-1 w-20 bg-accent-red mb-12"></div>
+                <div className="w-16 h-[3px] bg-accent-red mt-6"></div>
             </header>
 
-            <figure className="mb-12">
+            <figure className="mb-12 animate-reveal-delayed">
                 <Image
                     src="/images/author-mohamad-sriyanto.jpeg"
                     alt="Mohamad Sriyanto"

@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-
 @theme {
   --color-cream-bg: #F9F8F0;
   --color-card-bg: #E5E4D6;
@@ -21,6 +20,46 @@
   --cream-bg: #F9F8F0;
   --card-bg: #E5E4D6;
   --accent-red: #8B2525;
+  --border-subtle: #E5E4DC;
+}
+
+/* Animation Keyframes */
+@keyframes reveal-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes side-reveal {
+  0% {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-reveal {
+  animation: reveal-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-reveal-delayed {
+  opacity: 0;
+  animation: reveal-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+}
+
+.glass-panel {
+  background: rgba(249, 248, 240, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 body {
@@ -29,6 +68,7 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 }
 
 h1,
@@ -59,6 +99,7 @@ h4,
 a {
   color: inherit;
   text-decoration: none;
+  transition: all 0.3s ease;
 }
 
 .prose a {
@@ -79,9 +120,32 @@ a {
 
 /* Sidebar Menu Hover Fix */
 .sidebar-link {
-  transition: color 0.2s ease-in-out !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative;
+  display: inline-block;
+}
+
+.sidebar-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 1px;
+  bottom: -2px;
+  left: 0;
+  background-color: var(--accent-red);
+  transition: width 0.3s ease;
 }
 
 .sidebar-link:hover {
-  color: #8B2525 !important;
+  color: var(--accent-red) !important;
+  transform: translateX(4px);
+}
+
+.sidebar-link:hover::after {
+  width: 100%;
+}
+
+.sidebar-link.active {
+  color: var(--accent-red) !important;
+  font-weight: 700;
 }
