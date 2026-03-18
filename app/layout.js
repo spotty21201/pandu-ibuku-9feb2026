@@ -1,5 +1,6 @@
 import { Cormorant_Garamond, Montserrat, Fira_Code } from "next/font/google";
 import "./globals.css";
+import "@toast-ui/editor/dist/toastui-editor.css";
 import Sidebar from "./components/Sidebar";
 import { DOMAINS } from "@/lib/domains";
 

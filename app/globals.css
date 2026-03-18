@@ -149,3 +149,70 @@ a {
   color: var(--accent-red) !important;
   font-weight: 700;
 }
+
+.toast-minimal-editor .toastui-editor-defaultUI {
+  border-color: var(--border-subtle);
+  background: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.toast-minimal-editor .toastui-editor-defaultUI:hover,
+.toast-minimal-editor .toastui-editor-defaultUI:focus-within {
+  border-color: var(--accent-red);
+  box-shadow: 0 0 0 1px rgba(139, 37, 37, 0.12);
+}
+
+.toast-minimal-editor .toastui-editor-toolbar {
+  border-bottom: 1px solid var(--border-subtle);
+  background: rgba(249, 248, 240, 0.78);
+  padding: 10px 12px;
+}
+
+.toast-minimal-editor .toastui-editor-toolbar-group {
+  border-right: 0;
+  margin-right: 10px;
+  padding-right: 0;
+}
+
+.toast-minimal-editor .toastui-editor-toolbar-icons {
+  border-radius: 0;
+}
+
+.toast-minimal-editor .toastui-editor-toolbar-icons:hover,
+.toast-minimal-editor .toastui-editor-toolbar-icons.active {
+  background-color: rgba(139, 37, 37, 0.08);
+}
+
+.toast-minimal-editor .toastui-editor-main {
+  background: #ffffff;
+}
+
+.toast-minimal-editor .toastui-editor-ww-container {
+  background: #ffffff;
+}
+
+.toast-minimal-editor .toastui-editor-contents {
+  font-family: var(--font-sans);
+  font-size: 0.98rem;
+  line-height: 1.8;
+  color: var(--foreground);
+}
+
+.toast-minimal-editor .toastui-editor-contents h1,
+.toast-minimal-editor .toastui-editor-contents h2,
+.toast-minimal-editor .toastui-editor-contents h3,
+.toast-minimal-editor .toastui-editor-contents h4,
+.toast-minimal-editor .toastui-editor-contents h5,
+.toast-minimal-editor .toastui-editor-contents h6 {
+  font-family: var(--font-serif);
+}
+
+.toast-minimal-editor .toastui-editor-contents blockquote {
+  border-left-color: var(--accent-red);
+}
+
+.toast-minimal-editor .toastui-editor-popup,
+.toast-minimal-editor .toastui-editor-dropdown-toolbar {
+  border-color: var(--border-subtle);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+}

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import MarkdownEditor from "@/app/components/MarkdownEditor";
 import { DOMAINS } from "@/lib/domains";
 
 export default function NewPostPage() {
@@ -18,6 +19,12 @@ export default function NewPostPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!formData.content.trim()) {
+            alert("Content is required");
+            return;
+        }
+
         setLoading(true);
 
         try {
@@ -89,17 +96,14 @@ export default function NewPostPage() {
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-xs uppercase tracking-widest font-bold opacity-50">Content (Markdown)</label>
-                    <textarea
-                        required
-                        rows={15}
+                    <label className="text-xs uppercase tracking-widest font-bold opacity-50">Content</label>
+                    <MarkdownEditor
                         value={formData.content}
-                        onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                        className="w-full bg-white border border-border-subtle p-4 font-mono text-sm focus:outline-none focus:border-accent-red transition-colors resize-y"
+                        onChange={(content) => setFormData((current) => ({ ...current, content }))}
                         placeholder="Write your content here..."
                     />
                     <p className="text-[10px] uppercase tracking-widest opacity-40 font-bold">
-                        Tip: Line breaks are preserved. Use - or * for bullets. Use **bold** for emphasis.
+                        Visual editor, stored as markdown.
                     </p>
 
                 </div>
